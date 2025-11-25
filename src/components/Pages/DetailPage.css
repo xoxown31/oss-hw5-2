@@ -1,0 +1,30 @@
+.detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.student-details-full {
+  margin-bottom: 2rem;
+}
+
+.student-details-full p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.student-details-full p strong {
+  font-weight: 600;
+  color: #333;
+  margin-right: 0.5rem;
+}
+
+.detail-button-container {
+  display: flex;
+  justify-content: flex-start;
+}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import './DetailPage.css';
+import '../common.css';
 
 const DetailPage = () => {
   const { id } = useParams();
@@ -26,7 +28,7 @@ const DetailPage = () => {
   }
 
   return (
-    <div className="container">
+    <div className="detail-container">
       <h1>Student Details</h1>
       <div className="student-details-full">
         <p><strong>Name:</strong> {student.name}</p>
@@ -34,9 +36,11 @@ const DetailPage = () => {
         <p><strong>Email:</strong> {student.email}</p>
         <p><strong>City:</strong> {student.city}</p>
       </div>
-      <Link to="/list">
-        <button>Back to List</button>
-      </Link>
+      <div className="detail-button-container">
+        <Link to="/list">
+          <button className="btn btn-secondary">Back to List</button>
+        </Link>
+      </div>
     </div>
   );
 };

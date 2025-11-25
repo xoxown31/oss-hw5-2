@@ -71,7 +71,6 @@ const UpdatePage = () => {
       });
       if (res.ok) {
         setChangesCount((prev) => prev + 1);
-        addToast('Student updated successfully!', 'success');
       } else {
         addToast('Failed to update student.', 'error');
       }
