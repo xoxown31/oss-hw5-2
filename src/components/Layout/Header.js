@@ -9,12 +9,6 @@ const Header = () => {
         <div className="logo">
           <Link to="/">StudentHub</Link>
         </div>
-        <nav>
-          <ul className="nav-links">
-            <li><Link to="/list">Home</Link></li>
-            <li><Link to="/create">Add Student</Link></li>
-          </ul>
-        </nav>
       </div>
     </header>
   );
