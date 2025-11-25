@@ -18,6 +18,9 @@ const UpdatePage = () => {
   const emailInputRef = useRef(null);
   const cityInputRef = useRef(null);
 
+  const throttleTimeout = useRef(null);
+  const latestStudentData = useRef(null);
+
   const removeToast = useCallback((id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
@@ -37,6 +40,7 @@ const UpdatePage = () => {
         if (res.ok) {
           const data = await res.json();
           setStudent(data);
+          latestStudentData.current = data;
         } else {
           addToast('Failed to load student data.', 'error');
         }
@@ -45,29 +49,22 @@ const UpdatePage = () => {
       }
     };
     fetchStudent();
+
+    return () => {
+      if (throttleTimeout.current) {
+        clearTimeout(throttleTimeout.current);
+      }
+    }
   }, [id, apiUrl, addToast]);
 
-  const handleInputChange = async (e) => {
-    const { name, value } = e.target;
-    const updatedStudent = { ...student, [name]: value };
-    setStudent(updatedStudent);
-
-    // Validate before updating
-    if (
-      (name === 'name' && !value.trim()) ||
-      (name === 'age' && !String(value).trim()) ||
-      (name === 'email' && !value.trim()) ||
-      (name === 'city' && !value.trim())
-    ) {
-      addToast(`Please fill in the ${name}.`, 'warning');
-      return;
-    }
+  const throttledUpdate = useCallback(async () => {
+    if (!latestStudentData.current) return;
 
     try {
       const res = await fetch(apiUrl, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-        body: JSON.stringify(updatedStudent),
+        body: JSON.stringify(latestStudentData.current),
       });
       if (res.ok) {
         setChangesCount((prev) => prev + 1);
@@ -76,6 +73,30 @@ const UpdatePage = () => {
       }
     } catch (error) {
       addToast('Error occurred during update.', 'error');
+    } finally {
+      throttleTimeout.current = null;
+    }
+  }, [apiUrl, addToast]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const updatedStudent = { ...student, [name]: value };
+    setStudent(updatedStudent);
+    latestStudentData.current = updatedStudent;
+
+    if (
+      (name === 'name' && !value.trim()) ||
+      (name === 'age' && !String(value).trim()) ||
+      (name === 'email' && !value.trim()) ||
+      (name === 'city' && !value.trim())
+    ) {
+      return;
+    }
+
+    if (!throttleTimeout.current) {
+        throttleTimeout.current = setTimeout(() => {
+            throttledUpdate();
+        }, 500);
     }
   };
 
