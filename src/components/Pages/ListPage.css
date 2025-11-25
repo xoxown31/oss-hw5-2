@@ -1,0 +1,61 @@
+.list-page-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.student-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.student-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.student-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.student-card .student-details {
+  margin-bottom: 1rem;
+}
+
+.student-card .student-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.student-card .student-name a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.student-card .student-name a:hover {
+  color: #007bff;
+}
+
+.student-card .student-info {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.student-card .button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}

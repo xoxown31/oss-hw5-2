@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ToastContainer from '../Toast/ToastContainer';
+import './Form.css';
+import '../common.css';
 
 const CreatePage = () => {
   const apiUrl = "https://6909a7b12d902d0651b49b1c.mockapi.io/students";
@@ -76,7 +78,7 @@ const CreatePage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="form-container">
       <h1>Add New Student</h1>
       <form onSubmit={handleSubmit} className="student-form">
         <div className="form-group">
@@ -119,7 +121,9 @@ const CreatePage = () => {
             ref={cityInputRef}
           />
         </div>
-        <button type="submit">Add Student</button>
+        <div className="form-button-container">
+            <button type="submit" className="btn btn-primary">Add Student</button>
+        </div>
       </form>
       <ToastContainer toasts={toasts} removeToast={removeToast} />
     </div>

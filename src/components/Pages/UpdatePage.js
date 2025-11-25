@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ToastContainer from '../Toast/ToastContainer';
+import './Form.css';
+import '../common.css';
 
 const UpdatePage = () => {
   const { id } = useParams();
@@ -83,7 +85,7 @@ const UpdatePage = () => {
   }
 
   return (
-    <div className="container">
+    <div className="form-container">
       <h1>Edit Student</h1>
       <p>Total changes made: {changesCount}</p>
       <form className="student-form">
@@ -128,7 +130,9 @@ const UpdatePage = () => {
           />
         </div>
       </form>
-      <button onClick={() => navigate('/list')}>Back to List</button>
+      <div className="form-button-container">
+        <button className="btn btn-secondary" onClick={() => navigate('/list')}>Back to List</button>
+      </div>
       <ToastContainer toasts={toasts} removeToast={removeToast} />
     </div>
   );
