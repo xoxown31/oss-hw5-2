@@ -18,9 +18,6 @@ const UpdatePage = () => {
   const emailInputRef = useRef(null);
   const cityInputRef = useRef(null);
 
-  const throttleTimeout = useRef(null);
-  const latestStudentData = useRef(null);
-
   const removeToast = useCallback((id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
@@ -40,7 +37,6 @@ const UpdatePage = () => {
         if (res.ok) {
           const data = await res.json();
           setStudent(data);
-          latestStudentData.current = data;
         } else {
           addToast('Failed to load student data.', 'error');
         }
@@ -49,22 +45,14 @@ const UpdatePage = () => {
       }
     };
     fetchStudent();
-
-    return () => {
-      if (throttleTimeout.current) {
-        clearTimeout(throttleTimeout.current);
-      }
-    }
   }, [id, apiUrl, addToast]);
 
-  const throttledUpdate = useCallback(async () => {
-    if (!latestStudentData.current) return;
-
+  const updateStudent = useCallback(async (updatedStudent) => {
     try {
       const res = await fetch(apiUrl, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-        body: JSON.stringify(latestStudentData.current),
+        body: JSON.stringify(updatedStudent),
       });
       if (res.ok) {
         setChangesCount((prev) => prev + 1);
@@ -73,8 +61,6 @@ const UpdatePage = () => {
       }
     } catch (error) {
       addToast('Error occurred during update.', 'error');
-    } finally {
-      throttleTimeout.current = null;
     }
   }, [apiUrl, addToast]);
 
@@ -82,7 +68,6 @@ const UpdatePage = () => {
     const { name, value } = e.target;
     const updatedStudent = { ...student, [name]: value };
     setStudent(updatedStudent);
-    latestStudentData.current = updatedStudent;
 
     if (
       (name === 'name' && !value.trim()) ||
@@ -93,11 +78,7 @@ const UpdatePage = () => {
       return;
     }
 
-    if (!throttleTimeout.current) {
-        throttleTimeout.current = setTimeout(() => {
-            throttledUpdate();
-        }, 500);
-    }
+    updateStudent(updatedStudent);
   };
 
   if (!student) {
