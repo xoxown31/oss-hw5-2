@@ -14,17 +14,17 @@ const ListPage = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [toasts, setToasts] = useState([]);
 
-  const addToast = (message, type = "success") => {
+  const removeToast = useCallback((id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
+  const addToast = useCallback((message, type = "success") => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
       removeToast(id);
     }, 5000);
-  };
-
-  const removeToast = (id) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
+  }, [removeToast]);
 
   const getStudents = useCallback(async () => {
     setLoading(true);
@@ -39,7 +39,7 @@ const ListPage = () => {
       addToast("Failed to load data", "error");
     }
     setLoading(false);
-  }, [apiUrl]);
+  }, [apiUrl, addToast]);
 
   useEffect(() => {
     getStudents();
